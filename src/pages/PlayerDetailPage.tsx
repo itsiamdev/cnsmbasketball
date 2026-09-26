@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, NavLink } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ArrowLeft, User, Award, Calendar, Target, TrendingUp, Gamepad2, Instagram, Check, X, Facebook, Globe } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, User, Award, Calendar, Target, TrendingUp, Gamepad2, Instagram, Check, X, Facebook, Globe, ChevronLeft, ChevronRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import TeamFooter from "@/components/TeamFooter";
 
@@ -32,6 +32,10 @@ const players = [
     apg: 7.2,
     rpg: 3.1,
     instagram: "https://www.instagram.com/vasiliu.mateo/",
+    images: [
+      "https://cdn.nba.com/headshots/nba/latest/1610616/1628369.png",
+      "https://cdn.nba.com/headshots/nba/2024/latest/1610616/1628369.png",
+    ],
     description: "Jucător talentat cu abilități excepționale de tir. Este unul dintre cei mai promițători jucători ai echipei.",
     achievements: [
       "Cel mai bun marcator - Campionatul Judetean 2025",
@@ -68,6 +72,10 @@ const players = [
     apg: 3.4,
     rpg: 4.0,
     instagram: "https://www.instagram.com/iacob.emanuel/",
+    images: [
+      "https://cdn.nba.com/headshots/nba/latest/1610616/2544.png",
+      "https://cdn.nba.com/headshots/nba/2024/latest/1610616/2544.png",
+    ],
     description: "Jucător cu experiență, capabil să joace multiple poziții. Lider natural pe teren.",
     achievements: [
       "Locul 2 - Campionatul Judetean 2024",
@@ -102,6 +110,10 @@ const players = [
     apg: 2.8,
     rpg: 6.5,
     instagram: "https://www.instagram.com/istrate.david/",
+    images: [
+      "https://cdn.nba.com/headshots/nba/latest/1610616/201939.png",
+      "https://cdn.nba.com/headshots/nba/2024/latest/1610616/201939.png",
+    ],
     description: "Cel mai bun marcator al echipei. Performanță excepțională în atac și apărare.",
     achievements: [
       "Cel mai valoros jucător (MVP) - Campionatul Judetean 2025",
@@ -140,6 +152,10 @@ const players = [
     instagram: "https://www.instagram.com/ionitaaurelmihai/",
     facebook: "https://www.facebook.com/ionitaaurelmihai",
     website: "https://www.itsiamdev.com/",
+    images: [
+      "https://cdn.nba.com/headshots/nba/latest/1610616/203999.png",
+      "https://cdn.nba.com/headshots/nba/2024/latest/1610616/203999.png",
+    ],
     description: "Pivot dominant sub coș. Forță și prezență în aria de sub panou.",
     achievements: [
       "Cel mai bun recuperator - Campionatul Judetean 2025",
@@ -174,6 +190,10 @@ const players = [
     apg: 1.2,
     rpg: 10.1,
     instagram: "https://www.instagram.com/cepoi.dragos/",
+    images: [
+      "https://cdn.nba.com/headshots/nba/latest/1610616/203954.png",
+      "https://cdn.nba.com/headshots/nba/2024/latest/1610616/203954.png",
+    ],
     description: "Centru de elită cu abilități excelente de recuperare și protecție a coșului.",
     achievements: [
       "Cel mai bun centru - Campionatul Judetean 2024",
@@ -207,6 +227,10 @@ const players = [
     apg: 5.5,
     rpg: 2.4,
     instagram: "https://www.instagram.com/stanica.luca/",
+    images: [
+      "https://cdn.nba.com/headshots/nba/latest/1610616/1629630.png",
+      "https://cdn.nba.com/headshots/nba/2024/latest/1610616/1629630.png",
+    ],
     description: "Playmaker talentat cu viziune excelentă de joc. Creator de ocazii pentru colegi.",
     achievements: [
       "Cel mai bun pasator - Campionatul Judetean 2025",
@@ -241,6 +265,10 @@ const players = [
     apg: 2.1,
     rpg: 3.7,
     instagram: "https://www.instagram.com/hanganu.stefan/",
+    images: [
+      "https://cdn.nba.com/headshots/nba/latest/1610616/1629029.png",
+      "https://cdn.nba.com/headshots/nba/2024/latest/1610616/1629029.png",
+    ],
     description: "Jucător versatil cu potențial mare de creștere. Apărător agresiv.",
     achievements: [
       "Echipa All-Defensive - Campionatul Judetean 2025",
@@ -275,6 +303,10 @@ const players = [
     apg: 2.6,
     rpg: 5.2,
     instagram: "https://www.instagram.com/chiosa.constantin/",
+    images: [
+      "https://cdn.nba.com/headshots/nba/latest/1610616/1628378.png",
+      "https://cdn.nba.com/headshots/nba/2024/latest/1610616/1628378.png",
+    ],
     description: "Aripă completă cu abilități de scor și pasă. Energie constantă.",
     achievements: [
       "Progresul sezonului 2025",
@@ -308,6 +340,10 @@ const players = [
     apg: 2.6,
     rpg: 5.2,
     instagram: "https://www.instagram.com/birsan.cristian/",
+    images: [
+      "https://cdn.nba.com/headshots/nba/latest/1610616/1629640.png",
+      "https://cdn.nba.com/headshots/nba/2024/latest/1610616/1629640.png",
+    ],
     description: "Jucător cu mentality de învingător. Performanță consistentă în meciuri importante.",
     achievements: [
       "Jucătorul meciului de cele mai multe ori",
@@ -327,6 +363,8 @@ const players = [
 const PlayerDetailPage = () => {
   const { id } = useParams();
   const player = players.find((p) => p.id === Number(id));
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -345,7 +383,7 @@ const PlayerDetailPage = () => {
         <TeamFooter />
       </div>
     );
-  }
+   }
 
   const sortedSeasons = [...player.seasonsInfo].sort((firstSeason, secondSeason) =>
     secondSeason.season.localeCompare(firstSeason.season),
@@ -552,7 +590,93 @@ const PlayerDetailPage = () => {
             )}
           </motion.div>
         </div>
+
+        {/* Player Gallery */}
+        {player.images && player.images.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-16"
+          >
+            <h3 className="font-display text-lg font-bold uppercase mb-6 flex items-center gap-2">
+              <User className="w-5 h-5 text-accent" />
+              Galerie Foto
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {player.images.map((img, i) => (
+                <motion.button
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4, delay: i * 0.1 }}
+                  onClick={() => { setLightboxIndex(i); setLightboxOpen(true); }}
+                  className="relative overflow-hidden rounded-lg aspect-[4/3] group"
+                >
+                  <img src={img} alt={`${player.name} - imagine ${i + 1}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/40 transition-colors duration-300 flex items-center justify-center">
+                    <span className="text-foreground font-display uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">Vezi</span>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+        )}
       </motion.div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightboxOpen && player.images && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-background/95 flex items-center justify-center p-4"
+            onClick={() => setLightboxOpen(false)}
+          >
+            <button
+              className="absolute top-6 right-6 text-foreground hover:text-accent transition-colors z-10"
+              onClick={(e) => { e.stopPropagation(); setLightboxOpen(false); }}
+            >
+              <X className="w-8 h-8" />
+            </button>
+
+            {player.images.length > 1 && (
+              <>
+                <button
+                  className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-foreground hover:text-accent transition-colors bg-background/50 hover:bg-background/80 rounded-full p-2 z-10"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightboxIndex((prev) => (prev - 1 + player.images.length) % player.images.length);
+                  }}
+                >
+                  <ChevronLeft className="w-8 h-8" />
+                </button>
+                <button
+                  className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-foreground hover:text-accent transition-colors bg-background/50 hover:bg-background/80 rounded-full p-2 z-10"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightboxIndex((prev) => (prev + 1) % player.images.length);
+                  }}
+                >
+                  <ChevronRight className="w-8 h-8" />
+                </button>
+              </>
+            )}
+
+            <motion.img
+              key={lightboxIndex}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              src={player.images[lightboxIndex]}
+              alt={`${player.name} - imagine ${lightboxIndex + 1}`}
+              className="max-w-full max-h-[80vh] object-contain rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
       <TeamFooter />
     </div>
   );

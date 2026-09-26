@@ -3,6 +3,10 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { User, ChevronRight, History } from "lucide-react";
+import playerImage from "@/assets/players/player.png";
+import jordanImage from "@/assets/players/jordan.png";
+import imageImage from "@/assets/players/image.png";
+import curryImage from "@/assets/players/curry.png";
 
 type Player = {
   id: number;
@@ -10,21 +14,22 @@ type Player = {
   position: string;
   number: number;
   height: string;
+  image: string;
   ppg: number;
   apg: number;
   rpg: number;
 };
 
 const players: Player[] = [
-  { id: 1, name: "Vasiliu Mateo Ioan", position: "Extremă", number: 1, height: "1.85m", ppg: 18.5, apg: 7.2, rpg: 3.1 },
-  { id: 2, name: "Iacob Dumitru Emanuel ", position: "Extremă", number: 3, height: "1.90m", ppg: 15.8, apg: 3.4, rpg: 4.0 },
-  { id: 3, name: "Istrate David", position: "Aripă", number: 7, height: "1.96m", ppg: 22.1, apg: 2.8, rpg: 6.5 },
-  { id: 4, name: "Ioniță Aurel Mihai", position: "Pivot", number: 21, height: "2.01m", ppg: 14.2, apg: 1.9, rpg: 8.3 },
-  { id: 5, name: "Cepoi Dragoș Constantin", position: "Centru", number: 34, height: "2.06m", ppg: 12.6, apg: 1.2, rpg: 10.1 },
-  { id: 6, name: "Stănica Luca Sebastian", position: "Fond de Terrain", number: 11, height: "1.80m", ppg: 9.8, apg: 5.5, rpg: 2.4 },
-  { id: 7, name: "Hanganu Ștefan ", position: "Extremă", number: 15, height: "1.88m", ppg: 11.3, apg: 2.1, rpg: 3.7 },
-  { id: 8, name: "Chioșa Constantin Adrian", position: "Aripă", number: 22, height: "1.93m", ppg: 10.5, apg: 2.6, rpg: 5.2 },
-  { id: 9, name: "Birsan Cristian", position: "Aripă", number: 22, height: "1.93m", ppg: 10.5, apg: 2.6, rpg: 5.2 },
+  { id: 1, name: "Vasiliu Mateo Ioan", position: "Extremă", number: 1, height: "1.85m", image: playerImage, ppg: 18.5, apg: 7.2, rpg: 3.1 },
+  { id: 2, name: "Iacob Dumitru Emanuel ", position: "Extremă", number: 3, height: "1.90m", image: jordanImage, ppg: 15.8, apg: 3.4, rpg: 4.0 },
+  { id: 3, name: "Istrate David", position: "Aripă", number: 7, height: "1.96m", image: imageImage, ppg: 22.1, apg: 2.8, rpg: 6.5 },
+  { id: 4, name: "Ioniță Aurel Mihai", position: "Pivot", number: 21, height: "2.01m", image: curryImage, ppg: 14.2, apg: 1.9, rpg: 8.3 },
+  { id: 5, name: "Cepoi Dragoș Constantin", position: "Centru", number: 34, height: "2.06m", image: playerImage, ppg: 12.6, apg: 1.2, rpg: 10.1 },
+  { id: 6, name: "Stănica Luca Sebastian", position: "Fond de Terrain", number: 11, height: "1.80m", image: jordanImage, ppg: 9.8, apg: 5.5, rpg: 2.4 },
+  { id: 7, name: "Hanganu Ștefan ", position: "Extremă", number: 15, height: "1.88m", image: imageImage, ppg: 11.3, apg: 2.1, rpg: 3.7 },
+  { id: 8, name: "Chioșa Constantin Adrian", position: "Aripă", number: 22, height: "1.93m", image: curryImage, ppg: 10.5, apg: 2.6, rpg: 5.2 },
+  { id: 9, name: "Birsan Cristian", position: "Aripă", number: 22, height: "1.93m", image: playerImage, ppg: 10.5, apg: 2.6, rpg: 5.2 },
 ];
 
 const formerPlayers = [
@@ -50,7 +55,13 @@ const PlayerCard = ({ player, i, inView }: { player: Player; i: number; inView: 
           <span className="absolute text-[120px] font-display font-bold text-foreground/5 leading-none">
             {player.number}
           </span>
-          <User className="w-20 h-20 text-muted-foreground/40 group-hover:text-accent/60 transition-colors relative z-10" />
+          <img
+            src={player.image}
+            alt={`Portret ${player.name}`}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            onError={(event) => { event.currentTarget.style.display = "none"; }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent to-transparent" />
           <div className="absolute top-3 right-3 bg-accent text-accent-foreground font-display font-bold text-lg w-10 h-10 rounded-full flex items-center justify-center">
             #{player.number}
           </div>
